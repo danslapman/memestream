@@ -64,6 +64,26 @@ type Group = {
     [<JsonProperty("place")>] Place: Place
 }
 
+type GeoPlace = {
+    [<JsonProperty("pid")>] Id: uint64
+    [<JsonProperty("title")>] Title: string
+    [<JsonProperty("latitude")>] Latitude: int16
+    [<JsonProperty("longtitude")>] Longtitude: int16
+    [<JsonProperty("created")>] Created: uint64
+    [<JsonProperty("icon")>] Icon: string
+    [<JsonProperty("type")>] Type: string
+    [<JsonProperty("address")>] Address: string
+    [<JsonProperty("country")>] Country: uint16
+    [<JsonProperty("city")>] City: uint16
+}
+
+type GeoMark = {
+    [<JsonProperty("type")>] Type: string
+    [<JsonProperty("coordinates")>] Coordinates: string //TODO: check coordinate format
+    [<JsonProperty("place")>] Place: GeoPlace
+    [<JsonProperty("showmap")>] Showmap: bool
+}
+
 type FeedEntry = {
     [<JsonProperty("id")>] Id: uint64
     [<JsonProperty("owner_id")>] OwnerId: int64
