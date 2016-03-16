@@ -14,7 +14,8 @@ let day = Date.``2016``.``03``.``16``
 let sd = day + Time.``13``.``03``.``00``
 let ed = day + Time.``13``.``04``.``00``
 
-let slice = searchPhoto moscowArea sd ed
+//let slice = searchPhoto moscowArea sd ed
+let slice = searchFeed sd ed
 
 printfn "%i" slice.Data.Count
 

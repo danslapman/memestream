@@ -10,7 +10,7 @@ type VkResponse<'t> = {
 
 type VkCollection<'t> = {
     [<JsonProperty("count")>] Count: int64
-    [<JsonProperty("items")>] Items: ResizeArray<'t>
+    [<JsonProperty("items")>] Items: List<'t>
 }
 
 type VkCounter = {
@@ -40,6 +40,13 @@ type Photo = {
     [<JsonProperty("height")>] Height: int32
 }
 
+type PostedPhoto = {
+    [<JsonProperty("id")>] Id: uint64
+    [<JsonProperty("owner_id")>] OwnerId: int64
+    [<JsonProperty("photo_130")>] Photo130: string
+    [<JsonProperty("photo_604")>] Photo604: string
+}
+
 type GeoUnit = {
     [<JsonProperty("id")>] Id: uint16
     [<JsonProperty("title")>] Title: string
@@ -49,36 +56,15 @@ type User = {
     [<JsonProperty("id")>] Id: uint64
     [<JsonProperty("first_name")>] FirstName: string
     [<JsonProperty("last_name")>] LastName: string
-    [<JsonProperty("deactivated")>] Deactivated: bool
     [<JsonProperty("city")>] City: GeoUnit
     [<JsonProperty("country")>] Country: GeoUnit
-}
-
-type Place = {
-    [<JsonProperty("id")>] Id: uint64
-    [<JsonProperty("title")>] Title: string
-    [<JsonProperty("latitude")>] Latitude: int16
-    [<JsonProperty("longtitude")>] Longtitude: int16
-    [<JsonProperty("type")>] Type: string
-    [<JsonProperty("country")>] Country: uint16
-    [<JsonProperty("city")>] City: uint16
-    [<JsonProperty("address")>] Address: string
-}
-
-type Group = {
-    [<JsonProperty("id")>] Id: uint64
-    [<JsonProperty("name")>] Name: string
-    [<JsonProperty("deactivated")>] Deactivated: bool
-    [<JsonProperty("city")>] City: uint16
-    [<JsonProperty("country")>] Country: uint16
-    [<JsonProperty("place")>] Place: Place
 }
 
 type GeoPlace = {
     [<JsonProperty("pid")>] Id: uint64
     [<JsonProperty("title")>] Title: string
     [<JsonProperty("latitude")>] Latitude: int16
-    [<JsonProperty("longtitude")>] Longtitude: int16
+    [<JsonProperty("longitude")>] Longitude: int16
     [<JsonProperty("created")>] Created: uint64
     [<JsonProperty("icon")>] Icon: string
     [<JsonProperty("type")>] Type: string
@@ -87,20 +73,47 @@ type GeoPlace = {
     [<JsonProperty("city")>] City: uint16
 }
 
+type Group = {
+    [<JsonProperty("id")>] Id: uint64
+    [<JsonProperty("name")>] Name: string
+    [<JsonProperty("screen_name")>] ScreenName: string
+    [<JsonProperty("city")>] City: uint16
+    [<JsonProperty("country")>] Country: uint16
+    [<JsonProperty("place")>] Place: GeoPlace
+}
+
 type GeoMark = {
     [<JsonProperty("type")>] Type: string
-    [<JsonProperty("coordinates")>] Coordinates: string //TODO: check coordinate format
+    /// "lat lon"
+    [<JsonProperty("coordinates")>] Coordinates: string
     [<JsonProperty("place")>] Place: GeoPlace
     [<JsonProperty("showmap")>] Showmap: bool
+}
+
+type MediaAttachment = {
+    [<JsonProperty("type")>] Type: string
+    [<JsonProperty("photo")>] Photo: Photo
+    [<JsonProperty("posted_photo")>] PostedPhoto: PostedPhoto
 }
 
 type NewsfeedEntry = {
     [<JsonProperty("id")>] Id: uint64
     [<JsonProperty("owner_id")>] OwnerId: int64
-    [<JsonProperty("from_id")>] FromId: uint64
+    [<JsonProperty("from_id")>] FromId: int64
     [<JsonProperty("date")>] Date: uint64
     [<JsonProperty("text")>] Text: string
     [<JsonProperty("comments")>] Comments: VkCounter
     [<JsonProperty("likes")>] Likes: VkCounter
     [<JsonProperty("reposts")>] Reposts: VkCounter
+    [<JsonProperty("attachment")>] Attachment: MediaAttachment
+    [<JsonProperty("attachments")>] Attachments: List<MediaAttachment>
+}
+
+type NewsfeedVkResponse<'t> = {
+    [<JsonProperty("response")>]
+    Data: 't
+    [<JsonProperty("profiles")>]
+    User: List<User>
+    [<JsonProperty("groups")>]
+    Groups: List<Group>
 }
