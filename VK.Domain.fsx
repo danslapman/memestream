@@ -13,6 +13,12 @@ type VkCollection<'t> = {
     [<JsonProperty("items")>] Items: ResizeArray<'t>
 }
 
+type Area = {
+    Latitude: double
+    Longitude: double
+    Radius: int32
+}
+
 type Photo = {
     [<JsonProperty("id")>] Id: uint64
     [<JsonProperty("album_id")>] AlbumId: int64
