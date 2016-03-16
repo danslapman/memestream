@@ -116,4 +116,6 @@ type NewsfeedVkResponse<'t> = {
     User: List<User>
     [<JsonProperty("groups")>]
     Groups: List<Group>
+    [<JsonProperty("new_from")>]
+    NewFrom: string
 }

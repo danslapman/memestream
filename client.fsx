@@ -15,9 +15,9 @@ let sd = day + Time.``13``.``03``.``00``
 let ed = day + Time.``13``.``04``.``00``
 
 //let slice = searchPhoto moscowArea sd ed
-let slice = searchFeed sd ed
+let slice = searchFeed sd ed None
 
 printfn "%i" slice.Data.Count
 
-for photo in slice.Data.Items do
-    printfn "%A" photo
+//for photo in slice.Data.Items do
+    //printfn "%A" photo
