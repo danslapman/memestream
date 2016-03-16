@@ -2,3 +2,5 @@
 #r "FSharp.Data.dll"
 #I "packages//Newtonsoft.Json//lib//net40"
 #r "Newtonsoft.Json.dll"
+#I "packages//FSharp.Date//Lib//net40"
+#r "FSharp.Date.dll"

@@ -13,6 +13,10 @@ type VkCollection<'t> = {
     [<JsonProperty("items")>] Items: ResizeArray<'t>
 }
 
+type VkCounter = {
+    [<JsonProperty("count")>] Count: int64
+}
+
 type Area = {
     Latitude: double
     Longitude: double
@@ -90,10 +94,13 @@ type GeoMark = {
     [<JsonProperty("showmap")>] Showmap: bool
 }
 
-type FeedEntry = {
+type NewsfeedEntry = {
     [<JsonProperty("id")>] Id: uint64
     [<JsonProperty("owner_id")>] OwnerId: int64
     [<JsonProperty("from_id")>] FromId: uint64
     [<JsonProperty("date")>] Date: uint64
     [<JsonProperty("text")>] Text: string
+    [<JsonProperty("comments")>] Comments: VkCounter
+    [<JsonProperty("likes")>] Likes: VkCounter
+    [<JsonProperty("reposts")>] Reposts: VkCounter
 }
