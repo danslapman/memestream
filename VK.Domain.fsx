@@ -79,7 +79,7 @@ type Group = {
     [<JsonProperty("screen_name")>] ScreenName: string
     [<JsonProperty("city")>] City: uint16
     [<JsonProperty("country")>] Country: uint16
-    [<JsonProperty("place")>] Place: GeoPlace
+    [<JsonProperty("place")>] Place: GeoPlace option
 }
 
 type GeoMark = {
@@ -105,8 +105,7 @@ type NewsfeedEntry = {
     [<JsonProperty("comments")>] Comments: VkCounter
     [<JsonProperty("likes")>] Likes: VkCounter
     [<JsonProperty("reposts")>] Reposts: VkCounter
-    [<JsonProperty("attachment")>] Attachment: MediaAttachment
-    [<JsonProperty("attachments")>] Attachments: List<MediaAttachment>
+    [<JsonProperty("attachments")>] Attachments: List<MediaAttachment> option
 }
 
 type NewsfeedVkResponse<'t> = {

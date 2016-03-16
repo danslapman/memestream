@@ -19,5 +19,7 @@ let slice = searchFeed sd ed None
 
 printfn "%i" slice.Data.Count
 
-//for photo in slice.Data.Items do
-    //printfn "%A" photo
+let photos = 
+    slice.Data.Items
+    |> List.filter (fun el -> el.Attachments.IsSome)
+
