@@ -41,3 +41,19 @@ let searchFeed st et (next: string option) =
     |> Http.RequestString 
     |> (fun s -> JsonConvert.DeserializeObject<VkResponse<ExtendedVkCollection<NewsfeedEntry>>>(s, jsonConfig))
    
+let searchFeedAggr st et =
+    let mutable res = searchFeed st et None
+    
+    while not (String.IsNullOrEmpty(res.Data.NewFrom)) do
+        let resPart = searchFeed st et (Some(res.Data.NewFrom))
+        res <- {
+            Data = 
+            {
+                Items = res.Data.Items @ resPart.Data.Items
+                Count = res.Data.Count + resPart.Data.Count
+                Users = res.Data.Users @ resPart.Data.Users
+                Groups = res.Data.Groups @ resPart.Data.Groups
+                NewFrom = resPart.Data.NewFrom
+            }
+        }     
+    res

@@ -2,6 +2,7 @@
 #load "vk.fsx"
 
 open System
+open System.IO
 open FSharp.Date
 open VK
 open VK.Domain
@@ -9,14 +10,22 @@ open VK.Domain
 type Date = DateProvider<epoch=2010>
 type Time = TimeProvider
 
-let moscowArea: Area = { Latitude = 55.7522200; Longitude = 37.6155600; Radius = 6000 }
 let day = Date.``2016``.``03``.``16``
-let sd = day + Time.``13``.``03``.``00``
-let ed = day + Time.``13``.``04``.``00``
+let sd = day + Time.``17``.``49``.``00``
+let ed = day + Time.``17``.``51``.``00``
 
-//let slice = searchPhoto moscowArea sd ed
-let slice = searchFeed sd ed None
+let slice = searchFeedAggr sd ed
+    
+printfn "%i" slice.Data.Count    
+   
+slice.Data.Items |> List.exists (fun u -> u.Text.Contains("Это Семушка")) |> printfn "%b"
 
+(*
+using (File.CreateText("data.json")) (fun writer ->
+    for item in slice.Data.Items do
+        fprintfn writer "%A"  item)*)
+
+(*
 let users = slice.Data.Users |> List.map (fun u -> u.Id, u) |> Map.ofList
 let groups = slice.Data.Groups |> List.map (fun g -> g.Id, g) |> Map.ofList
 
@@ -33,4 +42,4 @@ for photo in slice.Data.Items do
                 results <- photo :: results
                 
             
-printfn "%i/%i" results.Length slice.Data.Count
+printfn "%i/%i" results.Length slice.Data.Count*)
