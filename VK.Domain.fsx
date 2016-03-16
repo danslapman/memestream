@@ -48,7 +48,7 @@ type PostedPhoto = {
 }
 
 type GeoUnit = {
-    [<JsonProperty("id")>] Id: uint16
+    [<JsonProperty("id")>] Id: uint32
     [<JsonProperty("title")>] Title: string
 }
 
@@ -56,29 +56,30 @@ type User = {
     [<JsonProperty("id")>] Id: uint64
     [<JsonProperty("first_name")>] FirstName: string
     [<JsonProperty("last_name")>] LastName: string
-    [<JsonProperty("city")>] City: GeoUnit
-    [<JsonProperty("country")>] Country: GeoUnit
+    [<JsonProperty("city")>] City: GeoUnit option
+    [<JsonProperty("country")>] Country: GeoUnit option
+    [<JsonProperty("hidden")>] IsHidden: bool
 }
 
 type GeoPlace = {
     [<JsonProperty("pid")>] Id: uint64
     [<JsonProperty("title")>] Title: string
-    [<JsonProperty("latitude")>] Latitude: int16
-    [<JsonProperty("longitude")>] Longitude: int16
+    [<JsonProperty("latitude")>] Latitude: float
+    [<JsonProperty("longitude")>] Longitude: float
     [<JsonProperty("created")>] Created: uint64
     [<JsonProperty("icon")>] Icon: string
     [<JsonProperty("type")>] Type: string
     [<JsonProperty("address")>] Address: string
-    [<JsonProperty("country")>] Country: uint16
-    [<JsonProperty("city")>] City: uint16
+    [<JsonProperty("country")>] Country: uint32
+    [<JsonProperty("city")>] City: uint32
 }
 
 type Group = {
     [<JsonProperty("id")>] Id: uint64
     [<JsonProperty("name")>] Name: string
     [<JsonProperty("screen_name")>] ScreenName: string
-    [<JsonProperty("city")>] City: uint16
-    [<JsonProperty("country")>] Country: uint16
+    [<JsonProperty("city")>] City: GeoUnit option
+    [<JsonProperty("country")>] Country: GeoUnit option
     [<JsonProperty("place")>] Place: GeoPlace option
 }
 
@@ -108,13 +109,10 @@ type NewsfeedEntry = {
     [<JsonProperty("attachments")>] Attachments: List<MediaAttachment> option
 }
 
-type NewsfeedVkResponse<'t> = {
-    [<JsonProperty("response")>]
-    Data: 't
-    [<JsonProperty("profiles")>]
-    User: List<User>
-    [<JsonProperty("groups")>]
-    Groups: List<Group>
-    [<JsonProperty("new_from")>]
-    NewFrom: string
+type ExtendedVkCollection<'t> = {
+    [<JsonProperty("count")>] Count: int64
+    [<JsonProperty("items")>] Items: List<'t>
+    [<JsonProperty("profiles")>] Users: List<User>
+    [<JsonProperty("groups")>] Groups: List<Group>
+    [<JsonProperty("new_from")>] NewFrom: string
 }

@@ -37,6 +37,7 @@ let searchFeed st et (next: string option) =
     parameters
     |> List.map (fun el -> sprintf "%s=%s" (fst el) (snd el)) |> String.concat "&"
     |> (fun s -> sprintf "https://api.vk.com/method/newsfeed.search?%s" s) 
+    //|> (fun s -> printfn "%s" s; s)
     |> Http.RequestString 
-    |> (fun s -> JsonConvert.DeserializeObject<NewsfeedVkResponse<VkCollection<NewsfeedEntry>>>(s, jsonConfig))
+    |> (fun s -> JsonConvert.DeserializeObject<VkResponse<ExtendedVkCollection<NewsfeedEntry>>>(s, jsonConfig))
    

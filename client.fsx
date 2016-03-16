@@ -17,9 +17,20 @@ let ed = day + Time.``13``.``04``.``00``
 //let slice = searchPhoto moscowArea sd ed
 let slice = searchFeed sd ed None
 
-printfn "%i" slice.Data.Count
+let users = slice.Data.Users |> List.map (fun u -> u.Id, u) |> Map.ofList
+let groups = slice.Data.Groups |> List.map (fun g -> g.Id, g) |> Map.ofList
 
-let photos = 
-    slice.Data.Items
-    |> List.filter (fun el -> el.Attachments.IsSome)
-
+let mutable results: NewsfeedEntry list = []
+for photo in slice.Data.Items do
+    if (photo.Attachments.IsSome) then
+        if (photo.OwnerId < 0L) then
+            let group = groups.[abs photo.OwnerId |> uint64]
+            if (group.Place.IsSome || group.City.IsSome) then
+                results <- photo :: results
+        else
+            let user = users.[photo.OwnerId |> uint64]
+            if (user.City.IsSome) then
+                results <- photo :: results
+                
+            
+printfn "%i/%i" results.Length slice.Data.Count
