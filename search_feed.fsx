@@ -10,20 +10,25 @@ open VK.Domain
 type Date = DateProvider<epoch=2010>
 type Time = TimeProvider
 
-let day = Date.``2016``.``03``.``16``
-let sd = day + Time.``17``.``49``.``00``
-let ed = day + Time.``17``.``51``.``00``
+let day = Date.``2016``.``03``.``17``
+let sd = day + Time.``11``.``49``.``00``
+let ed = day + Time.``11``.``53``.``00``
 
 let slice = searchFeedAggr sd ed
     
-printfn "%i" slice.Data.Count    
+printfn "Count: %i" slice.Data.Count
+printfn "Length: %i" slice.Data.Items.Length      
    
-slice.Data.Items |> List.exists (fun u -> u.Text.Contains("Это Семушка")) |> printfn "%b"
+slice.Data.Items |> List.exists (fun u -> u.Text.Contains("vgtt")) |> printfn "%b"
+
+//for item in slice.Data.Items do
+//    printfn "%s" item.Text
 
 (*
 using (File.CreateText("data.json")) (fun writer ->
     for item in slice.Data.Items do
-        fprintfn writer "%A"  item)*)
+        fprintfn writer "%A"  item)
+        *)
 
 (*
 let users = slice.Data.Users |> List.map (fun u -> u.Id, u) |> Map.ofList

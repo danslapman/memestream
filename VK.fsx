@@ -14,7 +14,16 @@ open Utils
 let russiaCid = "1"
 let moscowCid = "1"
 
-let searchPhoto (area: Area) st et =
+let searchPhoto query st et =
+    let startTs = toUnixTime st |> int64
+    let endTs = toUnixTime et |> int64
+    let data = 
+        Http.RequestString(
+            sprintf "https://api.vk.com/method/photos.search?v=5.50&sort=0&q=%s&count=1000&start_time=%i&end_time=%i" query startTs endTs
+        )
+    JsonConvert.DeserializeObject<VkResponse<VkCollection<Photo>>>(data, jsonConfig)
+
+let searchPhotoInArea (area: Area) st et =
     let startTs = toUnixTime st |> int64
     let endTs = toUnixTime et |> int64
     let data = 
@@ -32,7 +41,7 @@ let searchFeed st et (next: string option) =
     let parameters =
         match next with
         | None -> defParameters
-        | Some(nid) -> ("start_id", nid) :: defParameters
+        | Some(nid) -> ("start_from", nid) :: defParameters
     
     parameters
     |> List.map (fun el -> sprintf "%s=%s" (fst el) (snd el)) |> String.concat "&"
@@ -44,16 +53,16 @@ let searchFeed st et (next: string option) =
 let searchFeedAggr st et =
     let mutable res = searchFeed st et None
     
-    while not (String.IsNullOrEmpty(res.Data.NewFrom)) do
-        let resPart = searchFeed st et (Some(res.Data.NewFrom))
+    while not (String.IsNullOrEmpty(res.Data.NextFrom)) do
+        let resPart = searchFeed st et (Some(res.Data.NextFrom))
         res <- {
             Data = 
             {
-                Items = res.Data.Items @ resPart.Data.Items
-                Count = res.Data.Count + resPart.Data.Count
-                Users = res.Data.Users @ resPart.Data.Users
-                Groups = res.Data.Groups @ resPart.Data.Groups
-                NewFrom = resPart.Data.NewFrom
+                Items = List.append res.Data.Items resPart.Data.Items
+                Count = resPart.Data.Count
+                Users = List.append res.Data.Users resPart.Data.Users
+                Groups = List.append res.Data.Groups resPart.Data.Groups
+                NextFrom = resPart.Data.NextFrom
             }
         }     
     res

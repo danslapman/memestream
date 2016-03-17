@@ -114,5 +114,5 @@ type ExtendedVkCollection<'t> = {
     [<JsonProperty("items")>] Items: List<'t>
     [<JsonProperty("profiles")>] Users: List<User>
     [<JsonProperty("groups")>] Groups: List<Group>
-    [<JsonProperty("new_from")>] NewFrom: string
+    [<JsonProperty("next_from")>] NextFrom: string
 }
